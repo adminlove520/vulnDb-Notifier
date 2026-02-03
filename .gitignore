@@ -1,0 +1,5 @@
+latest.xml.env
+config.yaml
+launch.json
+*.db
+.env

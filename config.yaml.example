@@ -1,0 +1,27 @@
+# 配置文件示例
+# 在此处添加你关注的技术或产品关键词
+
+# 推送模式：daily（推送所有RSS内容）或 keyword（根据关键词过滤）
+# 默认为 daily
+push_mode: daily
+
+keywords:
+  # 示例关键词
+  - wordpress
+  - Floodlight
+  - apache
+  - nginx
+  - drupal
+  - mysql
+  - postgresql
+  - redis
+  - mongodb
+  - jenkins
+  - kubernetes
+  - docker
+  - aws
+  - azure
+  - google cloud
+  - linux
+  - windows
+  - macos

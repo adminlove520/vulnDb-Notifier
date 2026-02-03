@@ -1,0 +1,52 @@
+name: VulnDb Notifier
+
+on:
+  schedule:
+    # 每小时运行一次
+    - cron: '0 * * * *'
+  # 允许手动触发，添加推送模式选择
+  workflow_dispatch:
+    inputs:
+      push_mode:
+        description: '推送模式 (daily 或 keyword)'
+        required: true
+        default: 'daily'
+        type: choice
+        options:
+          - daily
+          - keyword
+
+jobs:
+  check-cves:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.20'
+      
+      - name: Install dependencies
+        run: go mod tidy
+      
+      - name: Build
+        run: go build -o vulnDb-Notifier ./cmd/CVENotifier
+      
+      - name: Create config file
+        run: |
+          cat > config.yaml << EOF
+          # 推送模式配置
+          push_mode: ${{ github.event.inputs.push_mode || 'daily' }}
+
+          # 关键词配置
+          keywords:
+            - wordpress
+            - Floodlight
+          EOF
+      - name: Run vulnDb Notifier
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        run: ./vulnDb-Notifier -config config.yaml

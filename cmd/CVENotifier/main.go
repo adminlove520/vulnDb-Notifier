@@ -22,7 +22,8 @@ type Config struct {
 func main() {
 	err := godotenv.Load()
 	if err != nil {
-		log.Fatalf("main: Error loading .env file: %v", err)
+		log.Printf("main: Warning: .env file not found, using environment variables: %v", err)
+		// 继续执行，不退出
 	}
 
 	var configPath string
